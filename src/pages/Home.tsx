@@ -1,44 +1,46 @@
 import React from 'react';
 import { useLoaderData, json } from 'react-router-dom';
+import { useQuery, QueryClient } from '@tanstack/react-query';
 
 import httpFetch from '../shared/http/http-fetch';
 import configData from '../config.json';
 import { Category } from '../shared/interfaces/category-list';
 
-const categoriesQuery = async () => ({
-	queryKey: 'categories',
+const categoriesQuery = () => ({
+	queryKey: ['categories'],
 	queryFn: async () => {
 		const response = await httpFetch<Category[]>(
 			`${configData.BACKEND_URL}/categories`
 		);
 		if (!response) {
-			throw new Error('Could not fetch events!');
+			throw new Response('Could not fetch events!');
 		} else {
-			return response;
+			return response as Category[];
 		}
 	},
 });
 
-export const loader = async () => {
-	try {
-		const response = await httpFetch<Category[]>(
-			`${configData.BACKEND_URL}/categories`
-		);
-		if (!response) {
-			throw json({ message: 'Could not fetch events!' }, { status: 500 });
-		} else {
-			return response;
-		}
-	} catch (error: any) {
-		throw json({ message: error }, { status: 500 });
-	}
+export const loader = (queryClient: any) => async () => {
+	const query = categoriesQuery();
+	return (
+		queryClient.getQueryData() ??
+		((await queryClient.fetchQuery(query)) as Category[])
+	);
 };
 
 const HomePage = () => {
-	const categories = useLoaderData() as Category[];
+	// const categories = useLoaderData() as Category[];
+	const initialData = useLoaderData() as Awaited<
+		ReturnType<ReturnType<typeof loader>>
+	>;
+	const { data } = useQuery<Category[]>({
+		...categoriesQuery(),
+		initialData,
+	});
+
 	return (
 		<ul>
-			{categories.map((category) => (
+			{data?.map((category) => (
 				<li key={category.id}>{category.title}</li>
 			))}
 		</ul>
