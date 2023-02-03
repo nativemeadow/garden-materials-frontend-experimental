@@ -5,11 +5,12 @@ import { useQuery, QueryClient } from '@tanstack/react-query';
 import httpFetch from '../shared/http/http-fetch';
 import configData from '../config.json';
 import { Category } from '../shared/interfaces/category-list';
+import CategoryList from '../components/CategoryList';
 
 const categoriesQuery = () => ({
 	queryKey: ['categories'],
 	queryFn: async () => {
-		const response = await httpFetch<Category[]>(
+		const response: Category[] = await httpFetch<Category[]>(
 			`${configData.BACKEND_URL}/categories`
 		);
 		if (!response) {
@@ -28,23 +29,16 @@ export const loader = (queryClient: any) => async () => {
 	);
 };
 
-const HomePage = () => {
-	// const categories = useLoaderData() as Category[];
+const HomePage: React.FC = () => {
 	const initialData = useLoaderData() as Awaited<
 		ReturnType<ReturnType<typeof loader>>
 	>;
-	const { data } = useQuery<Category[]>({
+	const { data: CategoryItems } = useQuery<Category[]>({
 		...categoriesQuery(),
 		initialData,
 	});
 
-	return (
-		<ul>
-			{data?.map((category) => (
-				<li key={category.id}>{category.title}</li>
-			))}
-		</ul>
-	);
+	return <CategoryList categories={CategoryItems as Category[]} />;
 };
 
 export default HomePage;

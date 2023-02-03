@@ -29,7 +29,7 @@ function App() {
 					loader: categoriesLoader(queryClient),
 				},
 				{
-					path: 'category/:categoryId',
+					path: 'category/:urlKey',
 					element: <CategoryPage />,
 					// children: [
 					// 	{

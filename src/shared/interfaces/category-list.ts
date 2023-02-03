@@ -6,3 +6,7 @@ export interface Category {
 	image: string;
 	category_order: number;
 }
+
+export interface CategoryItems {
+	categories: Category[];
+}
