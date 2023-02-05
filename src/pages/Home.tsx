@@ -21,10 +21,10 @@ const categoriesQuery = () => ({
 	},
 });
 
-export const loader = (queryClient: any) => async () => {
+export const loader = (queryClient: QueryClient) => async () => {
 	const query = categoriesQuery();
 	return (
-		queryClient.getQueryData() ??
+		queryClient.getQueryData(query.queryKey) ??
 		((await queryClient.fetchQuery(query)) as Category[])
 	);
 };
@@ -33,12 +33,20 @@ const HomePage: React.FC = () => {
 	const initialData = useLoaderData() as Awaited<
 		ReturnType<ReturnType<typeof loader>>
 	>;
-	const { data: CategoryItems } = useQuery<Category[]>({
-		...categoriesQuery(),
-		initialData,
-	});
+	const { data: CategoryItems } = useQuery<Category[]>(
+		categoriesQuery().queryKey,
+		{
+			...categoriesQuery(),
+			//initialData,
+		}
+	);
 
-	return <CategoryList categories={CategoryItems as Category[]} />;
+	return (
+		<>
+			<h3>Home</h3>
+			<CategoryList categories={CategoryItems as Category[]} />
+		</>
+	);
 };
 
 export default HomePage;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Category } from '../shared/interfaces/category-list';
 
 interface Props {
@@ -12,7 +13,11 @@ const CategoryList: React.FC<Props> = ({ categories }) => {
 	return (
 		<ul>
 			{categories?.map((category) => (
-				<li key={category.id}>{category.title}</li>
+				<li key={category.id}>
+					<Link to={`/category/${category.url_key}`}>
+						{category.title}
+					</Link>
+				</li>
 			))}
 		</ul>
 	);

@@ -5,9 +5,11 @@ import { useQuery, QueryClient } from '@tanstack/react-query';
 import httpFetch from '../shared/http/http-fetch';
 import configData from '../config.json';
 import { Category } from '../shared/interfaces/category-list';
+import CategoryDetail from '../components/CategoryDetail';
+import BeardCrumb from '../components/BeardCrumb';
 
 const categoriesQuery = (urlKey: string) => ({
-	queryKey: ['categories'],
+	queryKey: ['category', urlKey],
 	queryFn: async () => {
 		const response = await httpFetch<Category[]>(
 			`${configData.BACKEND_URL}/categories/${urlKey}`
@@ -28,11 +30,11 @@ interface Props {
 }
 
 export const loader =
-	(queryClient: any) =>
+	(queryClient: QueryClient) =>
 	async ({ request, params }: Props) => {
 		const query = categoriesQuery(params.urlKey);
 		return (
-			queryClient.getQueryData() ??
+			queryClient.getQueryData(query.queryKey) ??
 			((await queryClient.fetchQuery(query)) as Category[])
 		);
 	};
@@ -46,12 +48,20 @@ const CategoryPage = () => {
 	if (urlKey) {
 		const { data } = useQuery<Category[]>({
 			...categoriesQuery(urlKey),
-			initialData,
+			//initialData,
 		});
 		CategoryItems = data;
 	}
 
-	return <div>Category Page</div>;
+	if (!CategoryItems) {
+		return <div>Loading...</div>;
+	}
+	return (
+		<>
+			<BeardCrumb urlKey={urlKey!} />
+			<CategoryDetail categories={CategoryItems as Category[]} />
+		</>
+	);
 };
 
 export default CategoryPage;

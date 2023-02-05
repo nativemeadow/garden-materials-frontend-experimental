@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import BeardCrumb from '../components/BeardCrumb';
 
 type Props = {
 	children?: React.ReactNode;
@@ -8,9 +9,11 @@ type Props = {
 const RootLayout = ({ children }: Props) => {
 	return (
 		<>
-			<main>
-				<Outlet />
-			</main>
+			<div className='container'>
+				<main>
+					<Outlet />
+				</main>
+			</div>
 		</>
 	);
 };
