@@ -269,6 +269,6 @@ const useOrders = create<Store>((set, get) => ({
 
 export default useOrders;
 
-if (process.env.NODE_ENV === 'development') {
+if (import.meta.env.NODE_ENV === 'development') {
 	mountStoreDevtool('Store', useOrders);
 }

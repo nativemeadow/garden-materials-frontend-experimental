@@ -1,0 +1,7 @@
+.products-detail {
+	max-width: var(--max-container-size);
+	min-width: var(--min-container-size);
+	width: 75%;
+	margin-left: 1rem;
+	padding: 80px 0 100px 0;
+}

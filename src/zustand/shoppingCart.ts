@@ -54,6 +54,6 @@ const useShoppingCart = create<Store>((set, get) => ({
 
 export default useShoppingCart;
 
-if (process.env.NODE_ENV === 'development') {
+if (import.meta.env.NODE_ENV === 'development') {
 	mountStoreDevtool('Store', useShoppingCart);
 }

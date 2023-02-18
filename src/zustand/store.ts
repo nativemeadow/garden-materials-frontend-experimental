@@ -22,7 +22,7 @@ const useStore = create<Store>((set) => ({
 	removeExtendedRule: () => set((state) => ({ extendedRules: [] })),
 }));
 
-if (process.env.NODE_ENV === 'development') {
+if (import.meta.env.NODE_ENV === 'development') {
 	mountStoreDevtool('Store', useStore);
 }
 

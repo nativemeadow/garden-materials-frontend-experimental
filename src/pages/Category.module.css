@@ -1,0 +1,32 @@
+.category-detail {
+	max-width: var(--max-container-size);
+	min-width: var(--min-container-size);
+	width: 75%;
+	margin-left: 1rem;
+	padding: 80px 0 100px 0;
+	margin: auto;
+}
+
+.category-detail__heading {
+	font-size: 35px;
+	font-weight: 400;
+	padding-bottom: 45px;
+}
+
+.category-detail__title {
+	text-align: center;
+	font-size: 50px;
+}
+
+.category-detail__description > p {
+	text-align: center;
+	margin-bottom: 15px;
+	font-size: 16px;
+	line-height: 160%;
+	font-family: 'Raleway', sans-serif;
+}
+
+.category-detail__description > h1 {
+	font-size: 1.5rem;
+	margin-bottom: 0.5rem;
+}

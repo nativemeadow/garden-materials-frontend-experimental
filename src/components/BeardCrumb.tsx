@@ -5,13 +5,14 @@ import { useQuery } from '@tanstack/react-query';
 import httpFetch from '../shared/http/http-fetch';
 import configData from '../config.json';
 import { parser } from '../shared/util/html-parse';
-import { BreadCrumbItem } from './breadcrumb-item';
+import { BreadCrumbItem } from './BreadCrumbItem';
 
 import classes from './BreadCrumb.module.css';
 
 interface Props {
 	urlKey: string;
 }
+0;
 
 const BeardCrumb: React.FC<Props> = ({ urlKey }) => {
 	const {
@@ -39,7 +40,7 @@ const BeardCrumb: React.FC<Props> = ({ urlKey }) => {
 				<div className={classes['bread-crumbs']}>
 					<ul className={classes['bread-crumb']}>
 						<li>
-							<Link to='/'>Home</Link>
+							<Link to='/'>Products</Link>
 						</li>
 						{BreadCrumbItem?.map((item) => {
 							return (

@@ -4,9 +4,10 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import RootLayout from './pages/Root';
 import HomePage, { loader as categoriesLoader } from './pages/Home';
-import CategoryPage from './pages/Category';
-import DetailPage from './pages/Detail';
-import ProductsPage from './pages/Products';
+import CategoryPage, { loader as categoryDetailLoader } from './pages/Category';
+import ProductDetailPage, {
+	loader as productDetailLoader,
+} from './pages/ProductDetail';
 import ErrorPAge from './pages/Error';
 
 import './App.css';
@@ -30,13 +31,18 @@ function App() {
 				},
 				{
 					path: 'category/:urlKey',
+					loader: categoryDetailLoader(queryClient),
 					element: <CategoryPage />,
-					// children: [
-					// 	{
-					// 		path: 'product/:productId',
-					// 		element: <ProductsPage />,
-					// 	},
-					// ],
+				},
+				{
+					path: 'category/:categoryUrlKey/product/:urlKey',
+					loader: productDetailLoader(queryClient),
+					element: <ProductDetailPage />,
+				},
+				{
+					path: 'category/:categoryUrlKey/product/:urlKey/sku/:sku',
+					loader: productDetailLoader(queryClient),
+					element: <ProductDetailPage />,
 				},
 			],
 		},
