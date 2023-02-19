@@ -10,6 +10,7 @@ import { selectListOptions } from './SharedTypes';
 
 import DetailZoom from './DetailZoom';
 import ProductPriceLIst from './ProductForm';
+import ProductThumbs from './ProductThumbs';
 
 import classes from './ProductDetail.module.css';
 import './ProductDetail.css';
@@ -78,6 +79,7 @@ const ProductDetail: React.FC<Props> = ({ product, sku }) => {
 	useEffect(() => {
 		let pricing: Pricing[];
 		pricing = product.pricing;
+		setProductImage(product.image);
 		pricing.forEach((price) => {
 			coverageValueRef.current = price.coverage_value;
 		});
@@ -109,6 +111,7 @@ const ProductDetail: React.FC<Props> = ({ product, sku }) => {
 		const thumbs = product.pricing.filter((price) => {
 			return price.image && price.image.length > 0;
 		});
+		setProductThumbs(thumbs);
 
 		if (product.pricing.length === 1) {
 			setProductSizeMessage(
@@ -120,14 +123,13 @@ const ProductDetail: React.FC<Props> = ({ product, sku }) => {
 		}
 
 		setSelectList(productOptions);
-		setProductThumbs(thumbs);
 	}, [product, selectProductBySku]);
 
 	const imageHandler = () => {
 		if (windowSize.width! > 768 && product?.imageLensSize) {
 			return (
 				<DetailZoom
-					productImage={product.image}
+					productImage={productImage}
 					defaultImage={'default_image.png'}
 					imagePath={`${configData.IMAGES}/products/`}
 					imageLensSize={product?.imageLensSize}
@@ -137,7 +139,7 @@ const ProductDetail: React.FC<Props> = ({ product, sku }) => {
 		}
 		return (
 			<img
-				src={`${configData.IMAGES}/products/${product.image}`}
+				src={`${configData.IMAGES}/products/${productImage}`}
 				alt={product?.title !== undefined ? product?.title : ''}
 			/>
 		);
@@ -192,7 +194,8 @@ const ProductDetail: React.FC<Props> = ({ product, sku }) => {
 		const selected = event.target.value;
 		setSelectedValue(selected);
 		const title = productUnit(selected);
-		//setProductOptions(title);
+		// set the message describing the product size and price
+		setProductSizeMessage(title);
 		// if there is thumb highlighted in the drop down select list.
 		if (productThumbs) {
 			selectList.forEach((item) => {
@@ -255,8 +258,20 @@ const ProductDetail: React.FC<Props> = ({ product, sku }) => {
 			<div className={classes['product-detail-container']}>
 				<div className={classes['product-detail__image']}>
 					<div className={classes['product-detail__image--wrapper']}>
-						{product.image && imageHandler()}
+						{productImage && imageHandler()}
 					</div>
+					<ProductThumbs
+						productThumbs={productThumbs}
+						selectedThumb={selectedThumb}
+						setSelectedThumb={setSelectedThumb}
+						setProductImage={setProductImage}
+						setProductSku={setProductSku}
+						setSelectedValue={setSelectedValue}
+						productUnit={productUnit}
+						setProductOptions={setProductSizeMessage}
+						updateSelectedUnit={updateSelectedUnit}
+						updateThumbsImage={updateThumbsImage}
+					/>
 				</div>
 				<div className={classes['product-detail']}>
 					<h1>
