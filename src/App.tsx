@@ -44,6 +44,11 @@ function App() {
 					loader: productDetailLoader(queryClient),
 					element: <ProductDetailPage />,
 				},
+				{
+					path: 'shopping-cart/:categoryUrlKey/product/:urlKey/sku/:sku',
+					loader: productDetailLoader(queryClient),
+					element: <ProductDetailPage />,
+				},
 			],
 		},
 	]);

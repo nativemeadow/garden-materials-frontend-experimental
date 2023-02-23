@@ -11,6 +11,8 @@ import { selectListOptions } from './SharedTypes';
 import DetailZoom from './DetailZoom';
 import ProductPriceLIst from './ProductForm';
 import ProductThumbs from './ProductThumbs';
+import { Items } from '../../shared/interfaces/items';
+import useShoppingCart from '../../zustand/shoppingCart';
 
 import classes from './ProductDetail.module.css';
 import './ProductDetail.css';
@@ -55,6 +57,8 @@ const ProductDetail: React.FC<Props> = ({ product, sku }) => {
 		removeExtendedValue,
 		removeExtendedRule,
 	} = useStore();
+
+	const { addItem, showCart } = useShoppingCart();
 
 	const navigate = useNavigate();
 
@@ -214,6 +218,29 @@ const ProductDetail: React.FC<Props> = ({ product, sku }) => {
 	const addToCartHandler = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		console.log('add to cart');
+		const productJson: Items = {
+			category_id: product?.categoryId,
+			category_url_key: product?.categoryUrlKey,
+			product_id: product?.id,
+			product_url_key: product?.url_key,
+			// if the product does not have multiple pricing, then the sku comes for the parent product not from pricing
+			sku: productSku ? productSku : product?.sku,
+			title: product?.title,
+			image: productImageRef.current,
+			// if the product does not have multiple pricing, then the price comes for the first pricing element
+			price: selectedPriceRef.current
+				? selectedPriceRef.current
+				: product?.pricing[0].price!,
+			quantity: productQty,
+			// if the product does not have multiple pricing, then the units comes for the first pricing element
+			unit: selectedUnitRef.current
+				? selectedUnitRef.current
+				: product?.pricing[0].units,
+			color: extendedValue,
+		};
+		console.log('productJson', productJson);
+		addItem(productJson);
+		console.log(showCart());
 	};
 
 	/**

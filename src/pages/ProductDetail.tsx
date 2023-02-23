@@ -10,7 +10,7 @@ import parse from 'html-react-parser';
 import ProductBuilder from '../components/ProductBuilder';
 import LoadingSpinner from '../shared/components/UIElements/LoadingSpinner';
 import BeardCrumb from '../components/BeardCrumb';
-import ProductDetail from '../components/ProductDetail/ProductDetail';
+import ProductDetail from '../components/ProductDetail';
 import { selectListOptions } from '../components/ProductDetail/SharedTypes';
 
 import classes from './ProductDetail.module.css';
