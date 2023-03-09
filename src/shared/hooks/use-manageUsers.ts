@@ -1,7 +1,7 @@
 // import React from 'react';
-import { useMutation } from 'react-query';
+// import { useMutation } from 'react-query';
 import httpFetch from '../../shared/http/http-fetch';
-import { actionIf } from '../../shared/hooks/form-hook';
+import { actionIf } from './form-hook';
 import configData from '../../config.json';
 import { AuthContextIf } from '../../shared/context/auth-context';
 
@@ -81,7 +81,13 @@ export const useManageUsers = () => {
 	};
 
 	const logoutHandler = async (auth: AuthContextIf) => {
-		const headers = getHeaders(auth); //{ 'Content-Type': 'application/json' };
+		// const headers = getHeaders(auth); //{ 'Content-Type': 'application/json' };
+
+		const headers = {
+			'Content-Type': 'application/json',
+			withCredentials: true,
+			Authorization: `Bearer ${auth.token}`,
+		};
 
 		try {
 			const responseData: any = await httpFetch(

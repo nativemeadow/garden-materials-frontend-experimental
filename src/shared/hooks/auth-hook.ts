@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import useShoppingCart from '../../zustand/shoppingCart';
-import useManageOrders from '../../shared/hooks/use-manageOrders';
-import userOrders from '../../zustand/userOrders';
+//import useManageOrders from '../../shared/hooks/use-manageOrders';
+// import userOrders from '../../zustand/userOrders';
 
 let logoutTimer: any;
 
@@ -16,9 +16,9 @@ export const useAuth = () => {
 	const [lastName, setLastName] = useState<string | null>(null);
 	const [phone, setPhone] = useState<string | null>(null);
 	const { clearCart } = useShoppingCart();
-	const orders = userOrders((state) => state);
-	const { clearOrders } = userOrders();
-	const { setOrderDetailsFromLocalStorage } = useManageOrders();
+	// const orders = userOrders((state) => state);
+	// const { clearOrders } = userOrders();
+	//const { setOrderDetailsFromLocalStorage } = useManageOrders();
 
 	const login = useCallback(
 		(
@@ -48,7 +48,7 @@ export const useAuth = () => {
 			setTokenExpirationDate(tokenExpirationDate);
 			try {
 				localStorage.setItem(
-					'userData',
+					'user-data',
 					JSON.stringify({
 						userId: uid,
 						username,
@@ -60,13 +60,13 @@ export const useAuth = () => {
 						expiration: tokenExpirationDate.toISOString(),
 					})
 				);
-				setOrderDetailsFromLocalStorage();
+				//setOrderDetailsFromLocalStorage();
 			} catch (err) {
 				console.log(err);
 			}
 			console.log(
-				'localStorage: userData',
-				localStorage.getItem('userData')
+				'localStorage: user-data',
+				localStorage.getItem('user-data')
 			);
 		},
 		[]
@@ -85,10 +85,10 @@ export const useAuth = () => {
 			setPhone(phone);
 			try {
 				const currentStorageData = JSON.parse(
-					localStorage.getItem('userData') || '{}'
+					localStorage.getItem('user-data') || '{}'
 				);
 				localStorage.setItem(
-					'userData',
+					'user-data',
 					JSON.stringify({
 						...currentStorageData,
 						email,
@@ -102,8 +102,8 @@ export const useAuth = () => {
 			}
 
 			console.log(
-				'localStorage: userData',
-				localStorage.getItem('userData')
+				'localStorage: user-data',
+				localStorage.getItem('user-data')
 			);
 		},
 		[]
@@ -114,12 +114,12 @@ export const useAuth = () => {
 		setToken(null);
 		setTokenExpirationDate(null);
 		setUserId(null);
-		localStorage.removeItem('userData');
-		localStorage.removeItem('order');
-		localStorage.removeItem('usersOrder');
+		localStorage.removeItem('user-data');
+		localStorage.removeItem('shopping-cart');
+		// localStorage.removeItem('usersOrder');
 		clearCart();
-		clearOrders();
-		orders.reset();
+		// clearOrders();
+		// orders.reset();
 	}, []);
 
 	// useEffect to check if token is expired nad logout if it is
@@ -135,12 +135,12 @@ export const useAuth = () => {
 	}, [token, logout, tokenExpirationDate]);
 
 	useEffect(() => {
-		const storedData = localStorage.getItem('userData')
-			? JSON.parse(localStorage.getItem('userData')!)
+		const storedData = localStorage.getItem('user-data')
+			? JSON.parse(localStorage.getItem('user-data')!)
 			: null;
-		const storedUsersOrder = localStorage.getItem('usersOrder')
-			? JSON.parse(localStorage.getItem('usersOrder')!)
-			: null;
+		// const storedUsersOrder = localStorage.getItem('usersOrder')
+		// 	? JSON.parse(localStorage.getItem('usersOrder')!)
+		// 	: null;
 
 		if (storedData?.token && new Date(storedData.expiration) > new Date()) {
 			login(
@@ -155,16 +155,16 @@ export const useAuth = () => {
 			);
 		}
 
-		if (storedUsersOrder?.delivery_instructions) {
-			orders.setDeliveryInstructions(
-				storedUsersOrder.delivery_instructions
-			);
-			orders.setRequestedDeliveryDate(
-				storedUsersOrder.requested_delivery_date
-			);
-		}
-		storedUsersOrder?.purchase_order &&
-			orders.setPurchaseOrder(storedUsersOrder.purchase_order);
+		// if (storedUsersOrder?.delivery_instructions) {
+		// 	orders.setDeliveryInstructions(
+		// 		storedUsersOrder.delivery_instructions
+		// 	);
+		// 	orders.setRequestedDeliveryDate(
+		// 		storedUsersOrder.requested_delivery_date
+		// 	);
+		// }
+		// storedUsersOrder?.purchase_order &&
+		// 	orders.setPurchaseOrder(storedUsersOrder.purchase_order);
 	}, [login]);
 
 	return {

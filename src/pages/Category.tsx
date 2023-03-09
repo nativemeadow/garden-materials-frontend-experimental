@@ -19,6 +19,7 @@ const categoriesQuery = (urlKey: string) => ({
 		const response = await httpFetch<Category[]>(
 			`${configData.BACKEND_URL}/categories/${urlKey}`
 		);
+		console.log('category response', response);
 		if (!response) {
 			throw json({ message: 'Could not fetch category detail!' });
 		} else {

@@ -8,6 +8,8 @@ import configData from '../../config.json';
 import { useWindowSize } from '../../shared/hooks/widowSize-hook';
 import { selectListOptions } from './SharedTypes';
 
+import Modal from '../../shared/components/UIElements/Modal';
+import Button from '../../shared/components/FormElements/SimpleButton';
 import DetailZoom from './DetailZoom';
 import ProductPriceLIst from './ProductForm';
 import ProductThumbs from './ProductThumbs';
@@ -241,6 +243,7 @@ const ProductDetail: React.FC<Props> = ({ product, sku }) => {
 		console.log('productJson', productJson);
 		addItem(productJson);
 		console.log(showCart());
+		openAddToCartHandler();
 	};
 
 	/**
@@ -282,6 +285,32 @@ const ProductDetail: React.FC<Props> = ({ product, sku }) => {
 
 	return (
 		<>
+			<Modal
+				show={showAddToCart}
+				onCancel={closeAddToCartHandler}
+				header={'Add to Cart'}
+				headerClass={'item__modal-header'}
+				contentClass={'addToCart-item__modal-content'}
+				footerClass={'addToCart-item__modal-actions'}
+				footer={
+					<>
+						<Button
+							className={'addToCartButton'}
+							onClick={viewShoppingCartHandler}>
+							View Cart
+						</Button>
+						<Button
+							className={'addToCartButton'}
+							onClick={closeAddToCartHandler}>
+							Continue Shopping
+						</Button>
+					</>
+				}>
+				<div className={classes['addToCart-dialog']}>
+					<h2>Add to Cart</h2>
+					<p>1 Item(s) Consolidated into cart.</p>
+				</div>
+			</Modal>
 			<div className={classes['product-detail-container']}>
 				<div className={classes['product-detail__image']}>
 					<div className={classes['product-detail__image--wrapper']}>

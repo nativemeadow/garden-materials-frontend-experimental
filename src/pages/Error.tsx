@@ -1,5 +1,9 @@
 import React from 'react';
 import { useRouteError } from 'react-router-dom';
+import TopBar from '../components/PageElements/TopBar';
+import HeaderNav from '../components/PageElements/HeaderNav';
+
+import classes from './Error.module.css';
 
 type error = {
 	status: number;
@@ -24,9 +28,15 @@ const ErrorPage = () => {
 	}
 
 	return (
-		<div>
-			<p>{message}</p>
-		</div>
+		<>
+			<TopBar />
+			<HeaderNav />
+			<div className='container'>
+				<main className={classes['error-detail']}>
+					<p className={classes['error-message']}>{message}</p>
+				</main>
+			</div>
+		</>
 	);
 };
 

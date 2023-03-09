@@ -29,13 +29,13 @@ const useShoppingCart = create<Store>()(
 			showCart: () => get().Items,
 			addItem: (newItem: Item) => {
 				const existingItem = get().Items.find(
-					(item) => item.item_id === newItem.item_id
+					(item) => item.product_id === newItem.product_id
 				);
 				if (existingItem) {
 					useShoppingCart
 						.getState()
 						.updateItem(
-							existingItem.item_id!,
+							existingItem.product_id!,
 							existingItem.quantity + newItem.quantity
 						);
 				} else {
@@ -47,7 +47,7 @@ const useShoppingCart = create<Store>()(
 			updateItem: (id: number, quantity: number) => {
 				set((state) => {
 					const cartItem = state.Items.find(
-						(item) => item.item_id === id
+						(item) => item.product_id === id
 					);
 					if (cartItem) {
 						cartItem.quantity = quantity;
@@ -60,7 +60,7 @@ const useShoppingCart = create<Store>()(
 			},
 			removeItem: (id: number | string) =>
 				set((state) => ({
-					Items: state.Items.filter((item) => item.item_id !== id),
+					Items: state.Items.filter((item) => item.product_id !== id),
 				})),
 			clearCart: () => set((state) => ({ Items: [] })),
 			cartCount: () => {
