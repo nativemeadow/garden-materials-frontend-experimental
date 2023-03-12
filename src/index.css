@@ -1,12 +1,16 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Aleo:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-	font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+	font-family: 'Raleway', sans-serif;
 	font-size: 16;
 	line-height: 24px;
 	font-weight: 400;
+	--base-font-size: var(font-size) px;
 
 	/* color-scheme: light dark;
 	color: rgba(255, 255, 255, 0.87);
@@ -24,8 +28,8 @@
 	--border-color: #aa081e;
 	--anchor-color: #d71a20;
 
-	--size-2: calc(2 / var(--font-size)) rem;
-	--size-25: calc(25 / var(--font-size)) rem;
+	--size-2: calc(2 / var(font-size)) rem;
+	--size-25: calc(25 / var(font-size)) rem;
 }
 
 *,
@@ -37,13 +41,13 @@
 
 html {
 	height: 100%;
-	font-size: 16px;
+	font-size: var(--base-font-size);
 }
 
 body {
 	height: 100%;
 	width: 100%;
-	font-family: 'Raleway', sans-serif;
+	font-family: var(font-family);
 	color: var(--body-text-color);
 	line-height: normal;
 	font-weight: normal;
@@ -86,6 +90,14 @@ a {
 	width: 98%;
 	margin: 0 auto;
 	outline: none;
+}
+
+.section__container {
+	max-width: var(--max-container-size);
+	min-width: var(--min-container-size);
+	width: 75%;
+	margin-left: 1rem;
+	padding: 80px 0 100px 0;
 }
 
 .page_default {

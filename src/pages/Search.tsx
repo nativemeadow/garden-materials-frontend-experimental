@@ -9,7 +9,7 @@ import { ProductArrayBuilder } from '../components/ProductBuilder';
 import { Product } from '../shared/interfaces/product';
 import Results from '../components/search/results';
 
-import classes from './Products.module.css';
+import classes from './Search.module.css';
 
 const searchQuery = (searchTerm: string) => ({
 	queryKey: ['search', searchTerm],

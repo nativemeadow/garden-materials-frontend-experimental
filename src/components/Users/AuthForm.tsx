@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 
 import {
 	Form,
@@ -6,6 +6,7 @@ import {
 	useSearchParams,
 	useActionData,
 	useNavigation,
+	useResolvedPath,
 } from 'react-router-dom';
 
 import classes from './AuthForm.module.css';
@@ -17,6 +18,18 @@ const AuthForm = () => {
 	};
 	const navigation = useNavigation();
 	const [searchParams] = useSearchParams();
+	const userNameRef = useRef<HTMLInputElement>(null);
+	const passwordRef = useRef<HTMLInputElement>(null);
+	const [formIsNotValid, setFormIsNotValid] = useState(true);
+
+	const validForm = (event: React.ChangeEvent<HTMLInputElement>) => {
+		let validAnswer = false;
+		validAnswer =
+			userNameRef.current?.value.length! > 0 &&
+			passwordRef.current?.value.length! > 0;
+
+		setFormIsNotValid(!validAnswer);
+	};
 
 	return (
 		<div className={classes['content-wrapper']}>
@@ -45,6 +58,8 @@ const AuthForm = () => {
 									type='Username'
 									name='username'
 									placeholder='Username'
+									ref={userNameRef}
+									onBlur={validForm}
 									required
 								/>
 							</div>
@@ -60,11 +75,15 @@ const AuthForm = () => {
 									type='password'
 									name='password'
 									placeholder='Password'
+									ref={passwordRef}
+									onBlur={validForm}
 									required
 								/>
 							</div>
 							<div className=''>
-								<button className={classes['login__button']}>
+								<button
+									className={classes['login__button']}
+									disabled={formIsNotValid}>
 									Login
 								</button>
 							</div>
