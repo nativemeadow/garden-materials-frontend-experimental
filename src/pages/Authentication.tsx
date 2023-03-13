@@ -5,6 +5,7 @@ import configData from '../config.json';
 import { AuthContext } from '../shared/context/auth-context';
 import { AuthContextIf } from '../shared/context/auth-context';
 import { useManageUsers } from '../shared/hooks/use-manageUsers';
+import ErrorBoundary from '../components/Errors/ErrorBoundary';
 
 import AuthForm from '../components/Users/AuthForm';
 
@@ -89,7 +90,9 @@ const AuthenticationPage = () => {
 		<div className={classes['login__container']}>
 			<div className={classes['login__grid']}>
 				<div className={classes['login__form']}>
-					<AuthForm />
+					<ErrorBoundary>
+						<AuthForm />
+					</ErrorBoundary>
 				</div>
 				<div className={classes['login__new-account']}></div>
 			</div>

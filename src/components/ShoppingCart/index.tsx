@@ -5,6 +5,7 @@ import { persist, StateStorage } from 'zustand/middleware';
 import { Items } from '../../shared/interfaces/items';
 import ShoppingCartItems from './ShoppingCartItems';
 import useShoppingCart from '../../zustand/shoppingCart';
+import CalCost from './CalculateCost';
 
 import configData from '../../config.json';
 
@@ -16,6 +17,7 @@ import classes from './ShoppingCart.module.css';
 const ShoppingCart: React.FC = () => {
 	const { updateItem, removeItem } = useShoppingCart();
 	const shoppingCart = useShoppingCart((state) => state);
+	const { dollarUSLocale } = CalCost();
 
 	useEffect(() => {
 		async function GetCartData() {
@@ -76,16 +78,24 @@ const ShoppingCart: React.FC = () => {
 		<>
 			<div id={classes['shopping-cart']}>
 				<h3>Shopping Cart</h3>
-				<div className={classes['shopping-cart']}>
-					<div className={classes['shopping-cart__grid']}>
-						<form name='checkout' onSubmit={checkoutHandler}>
-							<ShoppingCartItems
-								items={shoppingCart.Items}
-								setTheStep={setTheStep}
-								onQuantityChange={onQuantityChange}
-								removeHandler={removeHandler}
-							/>
-						</form>
+				<div className='flex'>
+					<div className={classes['shopping-cart']}>
+						<div className={classes['shopping-cart__grid']}>
+							<form name='checkout' onSubmit={checkoutHandler}>
+								<ShoppingCartItems
+									items={shoppingCart.Items}
+									setTheStep={setTheStep}
+									onQuantityChange={onQuantityChange}
+									removeHandler={removeHandler}
+								/>
+							</form>
+						</div>
+					</div>
+					<div className={classes['order-subtotal']}>
+						<h3>SubTotal</h3>
+						<p>
+							${dollarUSLocale.format(shoppingCart.cartTotal())}
+						</p>
 					</div>
 				</div>
 			</div>

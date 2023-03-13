@@ -19,8 +19,6 @@ import ProductDetailPage, {
 } from './pages/ProductDetail';
 import ErrorPAge from './pages/Error';
 
-import './App.css';
-
 // Create a client
 const queryClient = new QueryClient();
 
