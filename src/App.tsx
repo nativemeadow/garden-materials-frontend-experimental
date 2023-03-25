@@ -7,7 +7,11 @@ import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
 
 import RootLayout from './pages/Root';
-import Authentication, { loginAction } from './pages/Authentication';
+import Authentication, {
+	loginAction,
+	createUserAction,
+	updateAccountAction,
+} from './pages/Authentication';
 
 import WelcomePage from './pages/WelcomeAuthenticated';
 import HomePage, { loader as categoriesLoader } from './pages/Home';
@@ -89,7 +93,23 @@ function App() {
 				{
 					path: '/login',
 					element: <Authentication />,
-					action: loginAction(userAuth),
+					action: loginAction(userAuth, queryClient),
+				},
+				{
+					path: '/login/:login/:message',
+					element: <Authentication />,
+					action: loginAction(userAuth, queryClient),
+				},
+				{
+					path: '/create-account',
+					element: <Authentication />,
+					action: createUserAction,
+				},
+				{
+					path: '/update-account',
+					element: <Authentication />,
+					// loader: updateUserSession,
+					action: updateAccountAction,
 				},
 				{
 					path: '/welcome',

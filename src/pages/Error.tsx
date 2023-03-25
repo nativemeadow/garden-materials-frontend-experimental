@@ -33,7 +33,9 @@ const ErrorPage = () => {
 			<HeaderNav />
 			<div className='container'>
 				<main className={classes['error-detail']}>
-					<p className={classes['error-message']}>{message}</p>
+					<p className={`${classes['error-message']} text-sm`}>
+						{message}
+					</p>
 				</main>
 			</div>
 		</>

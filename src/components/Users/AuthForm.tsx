@@ -12,6 +12,7 @@ import {
 import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
+	console.log('AuthForm');
 	const data = useActionData() as {
 		errors?: { [key: string]: string };
 		message?: string;
@@ -28,6 +29,9 @@ const AuthForm = () => {
 			userNameRef.current?.value.length! > 0 &&
 			passwordRef.current?.value.length! > 0;
 
+		if (!formIsNotValid && validAnswer) {
+			return;
+		}
 		setFormIsNotValid(!validAnswer);
 	};
 
@@ -35,13 +39,15 @@ const AuthForm = () => {
 		<div className={classes['content-wrapper']}>
 			<h2 className='text-3xl mb-4'>Login</h2>
 			{data && data.errors && (
-				<ul>
+				<ul className='text-sm mb-1'>
 					{Object.values(data.errors).map((error, index) => (
 						<li key={index}>{error}</li>
 					))}
 				</ul>
 			)}
-			{data && data.message && <p>{data.message}</p>}
+			{data && data.message && (
+				<p className='text-sm mb-1'>{data.message}</p>
+			)}
 			<div className={classes['login']}>
 				<Form method='post'>
 					<div className={classes['login-wrapper']}>
@@ -60,6 +66,7 @@ const AuthForm = () => {
 									placeholder='Username'
 									ref={userNameRef}
 									onBlur={validForm}
+									onChange={validForm}
 									required
 								/>
 							</div>
@@ -77,6 +84,7 @@ const AuthForm = () => {
 									placeholder='Password'
 									ref={passwordRef}
 									onBlur={validForm}
+									onChange={validForm}
 									required
 								/>
 							</div>
