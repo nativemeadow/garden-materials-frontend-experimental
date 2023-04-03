@@ -8,6 +8,8 @@
 
 .login {
 	display: block;
+	width: 400px;
+	margin: auto;
 }
 
 .login-field {

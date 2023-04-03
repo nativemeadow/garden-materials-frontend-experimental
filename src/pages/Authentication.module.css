@@ -44,10 +44,11 @@
 
 .login__form,
 .login__new-account {
-	border: 2px solid #e6e6e6;
+	/* border: 2px solid #e6e6e6; */
 	border-radius: 3px;
 	padding: 1.88rem;
 	font-weight: normal;
+	width: 56.25rem;
 }
 
 .login__form h2,

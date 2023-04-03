@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
+//import { QueryKey, useQueryClient } from '@tanstack/react-query';
 import Button from '../../shared/components/FormElements/SimpleButton';
 import Dropdown from '../../shared/components/UIElements/Dropdown';
 import { useManageUsers } from '../../shared/hooks/use-manageUsers';
@@ -12,9 +13,17 @@ const TopBar: React.FC = (props: {}) => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const userManager = useManageUsers(); // custom hook
+	//const queryClient = useQueryClient();
 
-	const logoutHandler = () => {
+	const logoutHandler = async () => {
 		userManager.logoutHandler(auth);
+
+		// Invalidate the user profile data query to ensure it's refetched with the new user's data
+		// await queryClient.invalidateQueries({
+		// 	queryKey: ['customerData'],
+		// 	refetchType: 'none',
+		// });
+
 		auth.logout();
 		navigate('/login');
 	};
@@ -34,8 +43,7 @@ const TopBar: React.FC = (props: {}) => {
 						{auth.isLoggedIn && (
 							<Dropdown user={`Hi ${auth.firstName!}`}>
 								<Link to={`/user/profile`}>Profile</Link>
-								<Link
-									to={`/user/change-password/${auth.userId}`}>
+								<Link to={`/user/change-password`}>
 									Change password
 								</Link>
 								<Button

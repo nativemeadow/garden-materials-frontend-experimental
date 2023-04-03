@@ -1,9 +1,18 @@
 import React, { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { AuthContext } from '../shared/context/auth-context';
 
 const WelcomePage = () => {
 	const auth = useContext(AuthContext);
+	const params = useParams();
+
+	if (params.message) {
+		return (
+			<article className='page_default'>
+				<p className='message'>{params.message}</p>{' '}
+			</article>
+		);
+	}
 
 	return (
 		<article className='page_default'>

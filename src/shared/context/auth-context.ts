@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import { QueryClient } from '@tanstack/react-query';
 
 export interface AuthContextIf {
 	isLoggedIn: boolean;

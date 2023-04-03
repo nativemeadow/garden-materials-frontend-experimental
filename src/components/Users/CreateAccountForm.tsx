@@ -1,11 +1,68 @@
 import React, { useRef, useState } from 'react';
-
 import { Form, useActionData } from 'react-router-dom';
+import { json, redirect } from 'react-router-dom';
+
+import httpFetch from '../../shared/http/http-fetch';
+import configData from '../../config.json';
+import { CustomerData, Props, USER_REGEX, PWD_REGEX } from './Shared';
 
 import classes from './AuthForm.module.css';
 
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+let apiPath: string;
+
+const headers = {
+	'Content-Type': 'application/json',
+	withCredentials: true,
+	credentials: 'include',
+};
+
+export function createUserAction() {
+	return async function createUserAction({ params, request }: Props) {
+		console.log('create user action', request);
+
+		const data = await request.formData();
+		const authData = {
+			type: '1',
+			customer_type: '1',
+			username: data.get('username'),
+			password: data.get('password'),
+			passwordConfirmation: data.get('confirmPassword'),
+			email: data.get('email'),
+			first_name: data.get('firstName'),
+			last_name: data.get('lastName'),
+		};
+		apiPath = '/auth/signup';
+
+		try {
+			const responseData: CustomerData = await httpFetch(
+				`${configData.BACKEND_URL}${apiPath}`,
+				'POST',
+				JSON.stringify(authData),
+				headers
+			);
+
+			console.log('logged in user:', responseData);
+
+			if (!responseData.message) {
+				return redirect(`/login/true/${responseData.success}`);
+			}
+			if (responseData.status === 422 || responseData.status === 401) {
+				return responseData;
+			}
+
+			if (responseData.message) {
+				return json(
+					{
+						message: `Account creation failed: ${responseData.message}`,
+					},
+					{ status: 500 }
+				);
+			}
+		} catch (err) {
+			console.error(`error occurred with ${apiPath} - ${err}`);
+		}
+	};
+}
 
 const CreateAccountForm = () => {
 	const data = useActionData() as {
@@ -51,7 +108,7 @@ const CreateAccountForm = () => {
 			)}
 			<div className={classes['login']}>
 				<Form method='post'>
-					<div className={classes['login-wrapper']}>
+					<div className={`${classes['login-wrapper']}`}>
 						<div className={'flex flex-col w-full'}>
 							<div className=''>
 								<label

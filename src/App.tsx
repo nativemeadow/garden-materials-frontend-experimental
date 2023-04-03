@@ -7,11 +7,17 @@ import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
 
 import RootLayout from './pages/Root';
-import Authentication, {
-	loginAction,
-	createUserAction,
+import Authentication, { loginAction } from './pages/Authentication';
+import RestPassword, {
+	changePasswordAction,
+} from './components/Users/ResetPassword';
+import ProfileUpdateForm, {
 	updateAccountAction,
-} from './pages/Authentication';
+	updateAccountLoader,
+} from './components/Users/ProfileUpdateForm';
+import CreateAccountForm, {
+	createUserAction,
+} from './components/Users/CreateAccountForm';
 
 import WelcomePage from './pages/WelcomeAuthenticated';
 import HomePage, { loader as categoriesLoader } from './pages/Home';
@@ -102,17 +108,28 @@ function App() {
 				},
 				{
 					path: '/create-account',
-					element: <Authentication />,
-					action: createUserAction,
+					element: <CreateAccountForm />,
+					action: createUserAction(),
 				},
 				{
-					path: '/update-account',
-					element: <Authentication />,
-					// loader: updateUserSession,
-					action: updateAccountAction,
+					path: '/user/profile',
+					loader: updateAccountLoader(userAuth),
+					id: 'user-profile',
+					element: <ProfileUpdateForm />,
+					action: updateAccountAction(userAuth),
+				},
+				{
+					path: '/user/change-password',
+					id: 'reset-password',
+					element: <RestPassword />,
+					action: changePasswordAction(userAuth),
 				},
 				{
 					path: '/welcome',
+					element: <WelcomePage />,
+				},
+				{
+					path: '/user/welcome/:message',
 					element: <WelcomePage />,
 				},
 			],

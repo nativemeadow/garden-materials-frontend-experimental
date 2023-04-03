@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouteError } from 'react-router-dom';
 import TopBar from '../components/PageElements/TopBar';
 import HeaderNav from '../components/PageElements/HeaderNav';
+import Footer from '../components/PageElements/Footer';
 
 import classes from './Error.module.css';
 
@@ -16,11 +17,8 @@ const ErrorPage = () => {
 	const error = useRouteError() as error;
 
 	let title = 'An error occurred!';
-	let message = 'Something went wrong!';
-
-	if (error.status === 500) {
-		message = error.data.message;
-	}
+	let message =
+		error.status === 500 ? error.data.message : 'Something went wrong!';
 
 	if (error.status === 404) {
 		title = 'Not found!';
@@ -28,7 +26,7 @@ const ErrorPage = () => {
 	}
 
 	return (
-		<>
+		<div className='flex flex-col'>
 			<TopBar />
 			<HeaderNav />
 			<div className='container'>
@@ -38,7 +36,8 @@ const ErrorPage = () => {
 					</p>
 				</main>
 			</div>
-		</>
+			<Footer />
+		</div>
 	);
 };
 

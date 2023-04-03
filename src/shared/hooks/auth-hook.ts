@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import useShoppingCart from '../../zustand/shoppingCart';
 //import useManageOrders from '../../shared/hooks/use-manageOrders';
-// import userOrders from '../../zustand/userOrders';
+//import userOrders from '../../zustand/userOrders';
 
 let logoutTimer: any;
 
@@ -74,9 +74,9 @@ export const useAuth = () => {
 
 	const updateUserSession = useCallback(
 		(
+			email: string | null,
 			firstName: string | null,
 			lastName: string | null,
-			email: string | null,
 			phone: string | null
 		) => {
 			setEmail(email);
@@ -149,8 +149,8 @@ export const useAuth = () => {
 				storedData.email,
 				storedData.firstName,
 				storedData.lastName,
-				storedData.token,
 				storedData.phone,
+				storedData.token,
 				new Date(storedData.expiration)
 			);
 		}

@@ -3,7 +3,7 @@ import classes from './Footer.module.css';
 
 const Footer: React.FC = () => {
 	return (
-		<footer className={classes['layout']}>
+		<footer className={`${classes['layout']} my-auto`}>
 			<div className={classes['wrapper']}>
 				<div className={classes['content']}>
 					<ul className={classes['items']}>
@@ -26,7 +26,7 @@ const Footer: React.FC = () => {
 						</li>
 					</ul>
 					<div>
-						Copyright © 2022 Garden Materials, Inc. All Rights
+						Copyright © 2023 Garden Materials, Inc. All Rights
 						Reserved.
 					</div>
 				</div>
