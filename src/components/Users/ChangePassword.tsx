@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 
-import { Form, useActionData } from 'react-router-dom';
+import { Form, useActionData, useNavigate, useParams } from 'react-router-dom';
 import { json, redirect } from 'react-router-dom';
+import httpFetch from '../../shared/http/http-fetch';
 
 import configData from '../../config.json';
 
@@ -44,16 +45,12 @@ export const changePasswordAction =
 		};
 
 		try {
-			const response = await fetch(
+			const responseJson: UpdateResponse = await httpFetch(
 				`${configData.BACKEND_URL}${apiPath}`,
-				{
-					method: 'PUT',
-					headers,
-					body: JSON.stringify(authData),
-				}
+				'PUT',
+				JSON.stringify(authData),
+				headers
 			);
-
-			const responseJson: UpdateResponse = await response.json();
 
 			return responseJson.success
 				? redirect(`/user/welcome/${responseJson.message}`)

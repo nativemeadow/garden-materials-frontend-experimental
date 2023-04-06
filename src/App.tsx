@@ -8,9 +8,9 @@ import { useAuth } from './shared/hooks/auth-hook';
 
 import RootLayout from './pages/Root';
 import Authentication, { loginAction } from './pages/Authentication';
-import RestPassword, {
+import ChangePassword, {
 	changePasswordAction,
-} from './components/Users/ResetPassword';
+} from './components/Users/ChangePassword';
 import ProfileUpdateForm, {
 	updateAccountAction,
 	updateAccountLoader,
@@ -18,6 +18,9 @@ import ProfileUpdateForm, {
 import CreateAccountForm, {
 	createUserAction,
 } from './components/Users/CreateAccountForm';
+import ForgotPassword, {
+	action as forgotPasswordAction,
+} from './components/Users/ForgotPassword';
 
 import WelcomePage from './pages/WelcomeAuthenticated';
 import HomePage, { loader as categoriesLoader } from './pages/Home';
@@ -121,8 +124,14 @@ function App() {
 				{
 					path: '/user/change-password',
 					id: 'reset-password',
-					element: <RestPassword />,
+					element: <ChangePassword />,
 					action: changePasswordAction(userAuth),
+				},
+				{
+					path: '/user/forgot-password',
+					id: 'forget-password',
+					element: <ForgotPassword />,
+					action: forgotPasswordAction,
 				},
 				{
 					path: '/welcome',

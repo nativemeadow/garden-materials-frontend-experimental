@@ -43,21 +43,19 @@ export function createUserAction() {
 
 			console.log('logged in user:', responseData);
 
-			if (!responseData.message) {
-				return redirect(`/login/true/${responseData.success}`);
+			if (responseData.message) {
+				return redirect(`/login/true/${responseData.message}`);
 			}
 			if (responseData.status === 422 || responseData.status === 401) {
 				return responseData;
 			}
 
-			if (responseData.message) {
-				return json(
-					{
-						message: `Account creation failed: ${responseData.message}`,
-					},
-					{ status: 500 }
-				);
-			}
+			return json(
+				{
+					message: `Account creation failed: ${responseData.message}`,
+				},
+				{ status: 500 }
+			);
 		} catch (err) {
 			console.error(`error occurred with ${apiPath} - ${err}`);
 		}
@@ -96,16 +94,14 @@ const CreateAccountForm = () => {
 	return (
 		<div className={classes['content-wrapper']}>
 			<h2 className='text-3xl mb-4'>Create My Account</h2>
-			{data && data.errors && (
+			{data?.errors && (
 				<ul className='text-sm mb-1'>
 					{Object.values(data.errors).map((error, index) => (
 						<li key={index}>{error}</li>
 					))}
 				</ul>
 			)}
-			{data && data.message && (
-				<p className='text-sm mb-1'>{data.message}</p>
-			)}
+			{data?.message && <p className='text-sm mb-1'>{data.message}</p>}
 			<div className={classes['login']}>
 				<Form method='post'>
 					<div className={`${classes['login-wrapper']}`}>

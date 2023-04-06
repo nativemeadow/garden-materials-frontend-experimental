@@ -94,6 +94,13 @@ const AuthForm = () => {
 									disabled={formIsNotValid}>
 									Login
 								</button>
+								<h4>Forgot your password</h4>
+								[+]&nbsp;
+								<Link
+									className={classes['create-account__link']}
+									to='/user/forgot-password'>
+									Click here to reset you password.
+								</Link>
 							</div>
 						</div>
 					</div>

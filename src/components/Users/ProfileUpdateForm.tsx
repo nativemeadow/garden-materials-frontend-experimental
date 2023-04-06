@@ -36,22 +36,20 @@ export const updateAccountLoader =
 
 			console.log('account loader response', responseData);
 
-			if (responseData.message === 'ok') {
-				return responseData;
-			}
-
 			if (responseData.message) {
-				throw json(
-					{
-						message: `Account access failed: ${responseData.message}`,
-					},
-					{ status: 500 }
-				);
+				return responseData;
 			}
 
 			if (responseData.status === 422 || responseData.status === 401) {
 				return responseData;
 			}
+
+			throw json(
+				{
+					message: `Account access failed: ${responseData.message}`,
+				},
+				{ status: 500 }
+			);
 		} catch (err) {
 			console.error(`error occurred with ${apiPath} - ${err}`);
 		}
@@ -87,37 +85,28 @@ export const updateAccountAction =
 		};
 
 		try {
-			const response = await fetch(
+			const responseData: UpdateResponse = await httpFetch(
 				`${configData.BACKEND_URL}${apiPath}`,
-				{
-					method: 'PUT',
-					headers,
-					body: JSON.stringify(authData),
-				}
+				'PUT',
+				JSON.stringify(authData),
+				headers
 			);
 
-			const responseJson: UpdateResponse = await response.json();
-
-			if (responseJson.success) {
+			if (responseData.success) {
 				auth.updateUserSession(
 					authData.email,
 					authData.first_name,
 					authData.last_name,
 					authData.phone
 				);
-				// return redirect('/user/profile');
-				return json(
-					{ message: `Account update successful` },
-					{ status: 200 }
-				);
-			} else {
-				return json(
-					{
-						message: `Account update failed: ${responseJson.message}`,
-					},
-					{ status: 500 }
-				);
+				return json({ message: responseData.message }, { status: 200 });
 			}
+			return json(
+				{
+					message: `Account update failed: ${responseData.message}`,
+				},
+				{ status: 500 }
+			);
 		} catch (err) {
 			console.error(`error occurred with ${apiPath} - ${err}`);
 		}
